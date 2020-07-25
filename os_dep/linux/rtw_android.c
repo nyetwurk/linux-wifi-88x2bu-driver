@@ -657,7 +657,11 @@ int rtw_android_priv_cmd(struct net_device *net, struct ifreq *ifr, int cmd)
 		goto exit;
 	}
 
-	if (!access_ok(VERIFY_READ, priv_cmd.buf, priv_cmd.total_len)) {
+	if (!access_ok(
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 35))
+		VERIFY_READ,
+#endif
+		priv_cmd.buf, priv_cmd.total_len)) {
 		RTW_INFO("%s: failed to access memory\n", __FUNCTION__);
 		ret = -EFAULT;
 		goto exit;

@@ -2482,7 +2482,7 @@ void halbtc8822b1ant_set_rfe_type(IN struct btc_coexist *btcoexist)
 void halbtc8822b1ant_set_ext_ant_switch(IN struct btc_coexist *btcoexist,
 			IN boolean force_exec, IN u8 ctrl_type, IN u8 pos_type)
 {
-	boolean	switch_polatiry_inverse = FALSE;
+	boolean	switch_polarity_inverse = FALSE;
 	u8		regval_0xcbd = 0, regval_0x64;
 	u32		u32tmp1 = 0, u32tmp2 = 0, u32tmp3 = 0;
 
@@ -2509,8 +2509,8 @@ void halbtc8822b1ant_set_ext_ant_switch(IN struct btc_coexist *btcoexist,
 	 * 0xcbd[1:0] = 2b'01 => Ant to BTG, WLA
 	 * 0xcbd[1:0] = 2b'10 => Ant to WLG
 	 */
-	switch_polatiry_inverse = (rfe_type->ext_ant_switch_ctrl_polarity == 1 ?
-			   ~switch_polatiry_inverse : switch_polatiry_inverse);
+	switch_polarity_inverse = (rfe_type->ext_ant_switch_ctrl_polarity == 1 ?
+			   !switch_polarity_inverse : switch_polarity_inverse);
 
 
 	switch (pos_type) {
@@ -2545,15 +2545,15 @@ void halbtc8822b1ant_set_ext_ant_switch(IN struct btc_coexist *btcoexist,
 				btcoexist, 0xcb4, 0xff,
 				0x77);
 
-			/* 0xcbd[1:0] = 2b'01 for no switch_polatiry_inverse,
+			/* 0xcbd[1:0] = 2b'01 for no switch_polarity_inverse,
 			 * ANTSWB =1, ANTSW =0
 			 */
 			if (pos_type == BT_8822B_1ANT_EXT_ANT_SWITCH_TO_S0WLG_S1BT)
 				regval_0xcbd = 0x3;
 			else if (pos_type == BT_8822B_1ANT_EXT_ANT_SWITCH_TO_WLG)
-				regval_0xcbd = (!switch_polatiry_inverse ?  0x2 : 0x1);
+				regval_0xcbd = (!switch_polarity_inverse ?  0x2 : 0x1);
 			else
-				regval_0xcbd = (!switch_polatiry_inverse ?  0x1 : 0x2);
+				regval_0xcbd = (!switch_polarity_inverse ?  0x1 : 0x2);
 			btcoexist->btc_write_1byte_bitmask(btcoexist,
 								0xcbd, 0x3, regval_0xcbd);
 
@@ -2572,10 +2572,10 @@ void halbtc8822b1ant_set_ext_ant_switch(IN struct btc_coexist *btcoexist,
 				btcoexist, 0xcb4, 0xff,
 				0x66);
 
-			/* 0xcbd[1:0] = 2b'10 for no switch_polatiry_inverse,
+			/* 0xcbd[1:0] = 2b'10 for no switch_polarity_inverse,
 			 * ANTSWB =1, ANTSW =0  @ GNT_BT=1
 			 */
-			regval_0xcbd = (!switch_polatiry_inverse ?  0x2 : 0x1);
+			regval_0xcbd = (!switch_polarity_inverse ?  0x2 : 0x1);
 			btcoexist->btc_write_1byte_bitmask(
 				btcoexist, 0xcbd, 0x3,
 				regval_0xcbd);
@@ -2605,10 +2605,10 @@ void halbtc8822b1ant_set_ext_ant_switch(IN struct btc_coexist *btcoexist,
 				btcoexist, 0x4e, 0x80,
 				0x1);
 
-			/* 0x64[0] = 1b'0 for no switch_polatiry_inverse,
+			/* 0x64[0] = 1b'0 for no switch_polarity_inverse,
 			 * DPDT_SEL_N =1, DPDT_SEL_P =0
 			 */
-			regval_0x64 = (!switch_polatiry_inverse ?  0x0 : 0x1);
+			regval_0x64 = (!switch_polarity_inverse ?  0x0 : 0x1);
 			btcoexist->btc_write_1byte_bitmask(
 				btcoexist, 0x64, 0x1,
 				regval_0x64);

@@ -23,6 +23,7 @@
 #define BIT(x)	(1 << (x))
 
 
+#ifndef WLAN_ETHHDR_LEN
 #define WLAN_ETHHDR_LEN		14
 #define WLAN_ETHADDR_LEN	6
 #define WLAN_IEEE_OUI_LEN	3
@@ -30,15 +31,22 @@
 #define WLAN_CRC_LEN		4
 #define WLAN_BSSID_LEN		6
 #define WLAN_BSS_TS_LEN		8
+#endif
+
 #define WLAN_HDR_A3_LEN		24
 #define WLAN_HDR_A4_LEN		30
 #define WLAN_HDR_A3_QOS_LEN	26
 #define WLAN_HDR_A4_QOS_LEN	32
 #define WLAN_SSID_MAXLEN	32
-#define WLAN_DATA_MAXLEN	2312
 
+#ifndef WLAN_DATA_MAXLEN
+#define WLAN_DATA_MAXLEN	2312
+#endif
+
+#ifndef WLAN_A3_PN_OFFSET
 #define WLAN_A3_PN_OFFSET	24
 #define WLAN_A4_PN_OFFSET	30
+#endif
 
 #define WLAN_MIN_ETHFRM_LEN	60
 #define WLAN_MAX_ETHFRM_LEN	1514
@@ -1027,8 +1035,10 @@ typedef enum _HT_CAP_AMPDU_DENSITY {
  * A-PMDU buffer sizes
  * According to IEEE802.11n spec size varies from 8K to 64K (in powers of 2)
  */
+#ifndef IEEE80211_MIN_AMPDU_BUF
 #define IEEE80211_MIN_AMPDU_BUF 0x8
 #define IEEE80211_MAX_AMPDU_BUF 0x40
+#endif
 
 
 /* Spatial Multiplexing Power Save Modes */
